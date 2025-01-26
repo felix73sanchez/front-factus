@@ -22,6 +22,19 @@ const TRIBUTE_TYPES = [
   { id: "21", name: "No aplica *" },
 ] as const
 
+const PAYMENT_METHOD_CODES = [
+  { id: "10", name: "Efectivo" },
+  { id: "42", name: "Consignación" },
+  { id: "20", name: "Cheque" },
+  { id: "47", name: "Transferencia" },
+  { id: "71", name: "Bonos" },
+  { id: "72", name: "Vales" },
+  { id: "1", name: "Medio de pago no definido" },
+  { id: "49", name: "Tarjeta Débito" },
+  { id: "48", name: "Tarjeta Crédito" },
+  { id: "ZZZ", name: "Otro*" },
+] as const
+
 const today = new Date().toISOString().split("T")[0];
 const todayMore30 = new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
 
@@ -56,8 +69,8 @@ export function InvoiceForm() {
     payment_due_date: "",
     payment_method_code: "",
     billing_period: {
-      start_date: "2025-01-21",
-      end_date: "2025-02-21",
+      start_date: today,
+      end_date: todayMore30,
     },
     customer: {
       identification: "",
@@ -142,9 +155,9 @@ export function InvoiceForm() {
       items: prev.items.map((item, i) =>
         i === itemIndex
           ? {
-              ...item,
-              withholding_taxes: [...(item.withholding_taxes || []), { ...emptyWithholdingTax }],
-            }
+            ...item,
+            withholding_taxes: [...(item.withholding_taxes || []), { ...emptyWithholdingTax }],
+          }
           : item,
       ),
     }))
@@ -156,9 +169,9 @@ export function InvoiceForm() {
       items: prev.items.map((item, i) =>
         i === itemIndex
           ? {
-              ...item,
-              withholding_taxes: (item.withholding_taxes ?? []).filter((_, j) => j !== taxIndex),
-            }
+            ...item,
+            withholding_taxes: (item.withholding_taxes ?? []).filter((_, j) => j !== taxIndex),
+          }
           : item,
       ),
     }))
@@ -170,11 +183,11 @@ export function InvoiceForm() {
       items: prev.items.map((item, i) =>
         i === itemIndex
           ? {
-              ...item,
-              withholding_taxes: (item.withholding_taxes ?? []).map((tax, j) =>
-                j === taxIndex ? { ...tax, [field]: value } : tax,
-              ),
-            }
+            ...item,
+            withholding_taxes: (item.withholding_taxes ?? []).map((tax, j) =>
+              j === taxIndex ? { ...tax, [field]: value } : tax,
+            ),
+          }
           : item,
       ),
     }))
@@ -185,12 +198,12 @@ export function InvoiceForm() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Invoice Information</CardTitle>
+            <CardTitle>Crear factura</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="reference_code">Reference Code</Label>
+                <Label htmlFor="reference_code">Codigo de referencia:</Label>
                 <Input
                   id="reference_code"
                   value={formData.reference_code}
@@ -198,16 +211,26 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="payment_method_code">Payment Method</Label>
-                <Input
+                <Label htmlFor="payment_method_code">Metodo de pago:</Label>
+                <select
                   id="payment_method_code"
+                  className="flex h-9 w-full rounded-md border border-neutral-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
                   value={formData.payment_method_code}
-                  onChange={(e) => setFormData((prev) => ({ ...prev, payment_method_code: e.target.value }))}
-                />
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, payment_method_code: e.target.value }))
+                  }
+                >
+                  <option value="">Selecciona el metodo de pago</option>
+                  {PAYMENT_METHOD_CODES.map((method) => (
+                    <option key={method.id} value={method.id}>
+                      {method.name}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="observation">Observation</Label>
+              <Label htmlFor="observation">Descripción</Label>
               <Textarea
                 id="observation"
                 value={formData.observation}
@@ -219,12 +242,12 @@ export function InvoiceForm() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Customer Information</CardTitle>
+            <CardTitle>Informacion del cliente</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="customer_names">Name</Label>
+                <Label htmlFor="customer_names">Nombre:</Label>
                 <Input
                   id="customer_names"
                   value={formData.customer.names || ""}
@@ -232,7 +255,7 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_email">Email</Label>
+                <Label htmlFor="customer_email">Correo electronico:</Label>
                 <Input
                   id="customer_email"
                   type="email"
@@ -241,7 +264,7 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_identification">Identification</Label>
+                <Label htmlFor="customer_identification">Identificación:</Label>
                 <Input
                   id="customer_identification"
                   value={formData.customer.identification || ""}
@@ -249,7 +272,7 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_phone">Phone</Label>
+                <Label htmlFor="customer_phone">Teléfono:</Label>
                 <Input
                   id="customer_phone"
                   value={formData.customer.phone || ""}
@@ -257,7 +280,7 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_address">Address</Label>
+                <Label htmlFor="customer_address">Dirección:</Label>
                 <Input
                   id="customer_address"
                   value={formData.customer.address || ""}
@@ -265,14 +288,14 @@ export function InvoiceForm() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_legal_organization">Organization Type</Label>
+                <Label htmlFor="customer_legal_organization">Tipo de organización:</Label>
                 <select
                   id="customer_legal_organization"
                   className="flex h-9 w-full rounded-md border border-neutral-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
                   value={formData.customer.legal_organization_id}
                   onChange={(e) => updateCustomer("legal_organization_id", e.target.value)}
                 >
-                  <option value="">Select organization type</option>
+                  <option value="">Selecciona organicación</option>
                   {ORGANIZATION_TYPES.map((type) => (
                     <option key={type.id} value={type.id}>
                       {type.name}
@@ -281,14 +304,14 @@ export function InvoiceForm() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="customer_tribute">Tribute Type</Label>
+                <Label htmlFor="customer_tribute">Tributo:</Label>
                 <select
                   id="customer_tribute"
                   className="flex h-9 w-full rounded-md border border-neutral-200 bg-white px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-neutral-950 disabled:cursor-not-allowed disabled:opacity-50 dark:border-neutral-800 dark:bg-neutral-950 dark:placeholder:text-neutral-400 dark:focus-visible:ring-neutral-300"
                   value={formData.customer.tribute_id}
                   onChange={(e) => updateCustomer("tribute_id", e.target.value)}
                 >
-                  <option value="">Select tribute type</option>
+                  <option value="">Seleciona tributo</option>
                   {TRIBUTE_TYPES.map((type) => (
                     <option key={type.id} value={type.id}>
                       {type.name}
@@ -302,10 +325,10 @@ export function InvoiceForm() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Items</CardTitle>
+            <CardTitle>Elementos</CardTitle>
             <Button type="button" onClick={addItem} size="sm">
               <Plus className="w-4 h-4 mr-2" />
-              Add Item
+              Agregar elemento
             </Button>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -325,18 +348,18 @@ export function InvoiceForm() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>Code Reference</Label>
+                    <Label>Codigo de referencia:</Label>
                     <Input
                       value={item.code_reference}
                       onChange={(e) => updateItem(itemIndex, "code_reference", e.target.value)}
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Name</Label>
+                    <Label>Nombre:</Label>
                     <Input value={item.name} onChange={(e) => updateItem(itemIndex, "name", e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label>Quantity</Label>
+                    <Label>Cantidad:</Label>
                     <Input
                       type="number"
                       value={item.quantity}
@@ -345,7 +368,7 @@ export function InvoiceForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Price</Label>
+                    <Label>Precio:</Label>
                     <Input
                       type="number"
                       value={item.price}
@@ -354,7 +377,7 @@ export function InvoiceForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Discount Rate (%)</Label>
+                    <Label>Tasa de descuento (%):</Label>
                     <Input
                       type="number"
                       value={item.discount_rate}
@@ -368,7 +391,7 @@ export function InvoiceForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Tax Rate (%)</Label>
+                    <Label>Tasa de impuesto (%):</Label>
                     <Input value={item.tax_rate} onChange={(e) => updateItem(itemIndex, "tax_rate", e.target.value)} />
                   </div>
                 </div>
@@ -378,20 +401,20 @@ export function InvoiceForm() {
                     <h4 className="text-sm font-medium">Withholding Taxes</h4>
                     <Button type="button" onClick={() => addWithholdingTax(itemIndex)} size="sm">
                       <Plus className="w-4 h-4 mr-2" />
-                      Add Tax
+                      Agregar impuesto
                     </Button>
                   </div>
                   {(item.withholding_taxes ?? []).map((tax, taxIndex) => (
                     <div key={taxIndex} className="flex gap-4 items-end">
                       <div className="space-y-2 flex-1">
-                        <Label>Code</Label>
+                        <Label>Codigo</Label>
                         <Input
                           value={tax.code}
                           onChange={(e) => updateWithholdingTax(itemIndex, taxIndex, "code", e.target.value)}
                         />
                       </div>
                       <div className="space-y-2 flex-1">
-                        <Label>Rate (%)</Label>
+                        <Label>Tasa (%)</Label>
                         <Input
                           value={tax.withholding_tax_rate}
                           onChange={(e) =>
@@ -413,12 +436,12 @@ export function InvoiceForm() {
               </div>
             ))}
           </CardContent>
-          <CardFooter>
-            <Button type="submit" disabled={isSubmitting} className="ml-auto">
-              {isSubmitting ? "Submitting..." : "Submit Invoice"}
+        </Card>
+        <CardFooter className="flex justify-center">
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Enviando..." : "Enviar factura"}
             </Button>
           </CardFooter>
-        </Card>
       </form>
 
       {/* Response Display */}

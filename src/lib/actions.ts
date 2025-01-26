@@ -31,7 +31,7 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
     }
 
     const factusResponse = await response.json();
-    console.log("Factura enviada correctamente:", factusResponse);
+    //console.log("Factura enviada correctamente:", factusResponse);
 
     // Extraer los datos relevantes de la respuesta de Factus
     const dataToPersist = {
@@ -43,11 +43,11 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
       billNumber: factusResponse.data.bill.number,
       referenceCode: factusResponse.data.bill.reference_code,
       createdAt: factusResponse.data.bill.created_at,
-      qrImage: factusResponse.data.bill.qr_image,
+      qrImage: factusResponse.data.bill.public_url,
     };
 
     // Enviar los datos relevantes a tu backend
-    const YOUR_BACKEND_URL = "http://localhost:1221/api/invoices/persist"; // Reemplaza con la URL de tu backend
+    const YOUR_BACKEND_URL = "http://localhost:1221/v1/facturas/guardar"; // Reemplaza con la URL de tu backend
     const username = "admin"; // Reemplaza con tu usuario
     const password = "admin123"; // Reemplaza con tu contraseña
 
@@ -68,7 +68,7 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
       );
     }
 
-    console.log("Datos persistidos correctamente en el backend");
+    //console.log("Datos persistidos correctamente en el backend");
 
     return {
       success: true,

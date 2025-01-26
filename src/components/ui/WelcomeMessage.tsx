@@ -6,7 +6,7 @@ export function WelcomeMessage() {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Bienvenido al Sistema de Facturación</CardTitle>
         <CardDescription className="text-center">
-          Una integración didáctica de la API de Halltech
+          Una integración didáctica de la API de Halltec
         </CardDescription>
       </CardHeader>
       <CardContent className="text-center">
