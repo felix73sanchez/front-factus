@@ -8,7 +8,8 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
   data?: any;
   error?: string;
 }> {
-  const FACTUS_API_URL = "https://api-sandbox.factus.com.co/v1/bills/validate";
+  
+  const FACTUS_API_URL =  `${process.env.API_FACTUS}v1/bills/validate`;
   const BEARER_TOKEN = await getToken();
 
   try {

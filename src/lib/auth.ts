@@ -1,17 +1,15 @@
 "use server";
 
-const url = "http://localhost:1221/v1/auth/token";
-const username = "admin"; // Reemplaza con tu usuario
-const password = "admin123"; // Reemplaza con tu contraseña
+const url = `${process.env.API_FSX}v1/auth/token`;
 
-// Variables en memoria para almacenar el token y su tiempo de expiración
+
 let cachedToken: string | null = null;
 let tokenExpiration: number | null = null;
 
 export async function getToken(): Promise<string> {
-  // Verifica si el token en caché es válido
+  
   if (cachedToken && tokenExpiration && Date.now() < tokenExpiration) {
-   // console.log("Token obtenido desde caché");
+   
     return cachedToken;
   }
 
@@ -19,7 +17,7 @@ export async function getToken(): Promise<string> {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`${process.env.USER}:${process.env.PASS}`).toString("base64")}`,
       },
     });
 

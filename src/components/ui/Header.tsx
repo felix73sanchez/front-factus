@@ -4,10 +4,10 @@ export default function Header() {
       <div className="container mx-auto flex justify-between items-center">
        
         <nav>
-          <a href="/facturas" className="px-4 hover:underline">
+          <a href="/crea-facturas" className="px-4 hover:underline">
             Crear factura
           </a>
-          <a href="#search" className="px-4 hover:underline">
+          <a href="/facturas-all" className="px-4 hover:underline">
             Ver facturas
           </a>
         </nav>

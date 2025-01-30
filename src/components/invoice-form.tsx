@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Trash2, X } from "lucide-react"
+import { Plus, Trash2, X, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -90,36 +90,65 @@ export function InvoiceForm() {
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-
+    e.preventDefault();
+    setIsSubmitting(true);
+  
     try {
-      const result = await submitInvoiceToFactus(formData)
+      const result = await submitInvoiceToFactus(formData);
       const response: ServerResponse = {
         success: result.success,
         data: formData,
         timestamp: new Date().toISOString(),
-      }
-      setServerResponse(response)
-
+      };
+      setServerResponse(response);
+  
       if (result.success) {
-        toast.success("Invoice submitted successfully")
+        toast.success("Invoice submitted successfully");
+  
+        
+        setFormData({
+          numbering_range_id: 8,
+          reference_code: "",
+          observation: "",
+          payment_form: "1",
+          payment_due_date: "",
+          payment_method_code: "",
+          billing_period: {
+            start_date: today,
+            end_date: todayMore30,
+          },
+          customer: {
+            identification: "",
+            dv: "",
+            company: "",
+            trade_name: "",
+            names: "",
+            address: "",
+            email: "",
+            phone: "",
+            legal_organization_id: "",
+            tribute_id: "",
+            identification_document_id: "2",
+            municipality_id: "",
+          },
+          items: [{ ...emptyItem }],
+        });
       } else {
-        response.error = result.error
-        toast.error(result.error || "Failed to submit invoice")
+        response.error = result.error;
+        toast.error(result.error || "Failed to submit invoice");
       }
     } catch (error) {
       const errorResponse: ServerResponse = {
         success: false,
         error: "An unexpected error occurred",
         timestamp: new Date().toISOString(),
-      }
-      setServerResponse(errorResponse)
-      toast.error("An error occurred")
+      };
+      setServerResponse(errorResponse);
+      toast.error("An error occurred");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const updateCustomer = (field: keyof typeof formData.customer, value: string) => {
     setFormData((prev) => ({
@@ -195,6 +224,15 @@ export function InvoiceForm() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-6">
+       {/* Botón para volver al inicio */}
+       <div className="fixed top-4 left-4">
+        <a href="/"> {/* Cambia "/" por la ruta de inicio de tu aplicación */}
+          <Button variant="outline" size="sm">
+            <ArrowLeft className="w-4 h-4 mr-2" /> {/* Ícono de flecha hacia la izquierda */}
+            Volver al inicio
+          </Button>
+        </a>
+      </div>
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
@@ -377,7 +415,7 @@ export function InvoiceForm() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>Tasa de descuento (%):</Label>
+                    <Label>Descuento:</Label>
                     <Input
                       type="number"
                       value={item.discount_rate}

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Inicio",
-  description: "Gestor de facturas",
+  title: "Crea facturas",
+  description: "Genera tu factura en línea",
 };
 
 export default function RootLayout({
