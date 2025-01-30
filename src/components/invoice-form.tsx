@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Plus, Trash2, X, ArrowLeft } from "lucide-react"
+import { Plus, Trash2, X, ArrowLeft, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -232,7 +232,17 @@ export function InvoiceForm() {
             Volver al inicio
           </Button>
         </a>
+        <div className="fixed top-4 right-4">
+        <a href="/facturas-all"> 
+          <Button variant="outline" size="sm">
+            Ver facturas
+            <ArrowRight className="w-4 h-4 mr-2" /> 
+          </Button>
+        </a>
       </div>
+      </div>
+             {/* Botón para volver al inicio */}
+      
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
           <CardHeader>
