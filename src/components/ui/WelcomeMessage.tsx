@@ -6,7 +6,7 @@ export function WelcomeMessage() {
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Bienvenidos al sistema de facturación</CardTitle>
         <CardDescription className="text-center">
-          Una integración didáctica de la API de Halltec
+          Una integración didáctica de la API de Halltech
         </CardDescription>
       </CardHeader>
       <CardContent className="text-center">
@@ -14,8 +14,7 @@ export function WelcomeMessage() {
           Este sistema fue desarrollado por{" "}
           <span className="font-semibold text-blue-600 dark:text-blue-400">Félix Sánchez (FSX)</span>{" "}
           como un proyecto educativo para demostrar la integración de la api de Factus.
-        </p>
-        
+        </p>  
       </CardContent>
     </Card>
   );

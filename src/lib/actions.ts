@@ -13,7 +13,7 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
   const BEARER_TOKEN = await getToken();
 
   try {
-    // Enviar la factura a Factus
+    
     const response = await fetch(FACTUS_API_URL, {
       method: "POST",
       headers: {
@@ -32,9 +32,7 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
     }
 
     const factusResponse = await response.json();
-    //console.log("Factura enviada correctamente:", factusResponse);
-
-    // Extraer los datos relevantes de la respuesta de Factus
+  
     const dataToPersist = {
       status: factusResponse.status,
       customerName: factusResponse.data.customer.names,
@@ -47,30 +45,24 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
       qrImage: factusResponse.data.bill.public_url,
     };
 
-    // Enviar los datos relevantes a tu backend
-    const YOUR_BACKEND_URL = "http://localhost:1221/v1/facturas/guardar"; // Reemplaza con la URL de tu backend
-    const username = "admin"; // Reemplaza con tu usuario
-    const password = "admin123"; // Reemplaza con tu contraseña
+    
+    const YOUR_BACKEND_URL = `${process.env.API_FSX}v1/facturas/guardar`;
 
     const persistResponse = await fetch(YOUR_BACKEND_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json", // Asegúrate de incluir este encabezado
-        Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
+        "Content-Type": "application/json", 
+        Authorization: `Basic ${Buffer.from(`${process.env.USER}:${process.env.PASS}`).toString("base64")}`,
       },
       body: JSON.stringify(dataToPersist),
     });
 
-    // Verificar si la respuesta del backend es exitosa
     if (!persistResponse.ok) {
       const errorResponse = await persistResponse.json(); // Obtener la respuesta de error del backend
       throw new Error(
         `Error al persistir los datos en el backend: ${persistResponse.status} - ${errorResponse?.message || "Error desconocido"}`
       );
     }
-
-    //console.log("Datos persistidos correctamente en el backend");
-
     return {
       success: true,
       data: factusResponse,

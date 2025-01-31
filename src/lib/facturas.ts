@@ -8,9 +8,9 @@ interface Factura {
   qrImage: string;
 }
 
-const API_FSX = process.env.API_FSX || "http://localhost:1221/";
-const USER = process.env.USER || "admin";
-const PASS = process.env.PASS || "admin123";
+const API_FSX = process.env.API_FSX;
+const USER = process.env.USER;
+const PASS = process.env.PASS;
 
 export async function getFacturas(): Promise<Factura[]> {
   const url = `${API_FSX}v1/facturas`;
@@ -21,7 +21,7 @@ export async function getFacturas(): Promise<Factura[]> {
       headers: {
         Authorization: `Basic ${Buffer.from(`${USER}:${PASS}`).toString("base64")}`,
       },
-      cache: "no-store", // Evita el almacenamiento en caché para obtener siempre los datos más recientes
+      cache: "no-store",
     });
 
     if (!response.ok) {

@@ -1,18 +1,18 @@
 import { z } from "zod"
 
 const withholdingTaxSchema = z.object({
-  code: z.string().min(1, "Code is required"),
-  withholding_tax_rate: z.string().min(1, "Rate is required"),
+  code: z.string().min(1, "Codigo es requerido"),
+  withholding_tax_rate: z.string().min(1, "El porcentaje de retencion es requerido"),
 })
 
 const itemSchema = z.object({
-  code_reference: z.string().min(1, "Code reference is required"),
-  name: z.string().min(1, "Name is required"),
-  quantity: z.number().min(1, "Quantity must be at least 1"),
-  discount: z.number().min(0, "Discount cannot be negative"),
-  discount_rate: z.number().min(0, "Discount rate cannot be negative"),
-  price: z.number().min(0, "Price cannot be negative"),
-  tax_rate: z.string().min(1, "Tax rate is required"),
+  code_reference: z.string().min(1, "Codigo de referencia es requerido"),
+  name: z.string().min(1, "Nombre es requerido"),
+  quantity: z.number().min(1, "Cantidad no puede ser menor a 1"),
+  discount: z.number().min(0, "el descuento no puede ser negativo"),
+  discount_rate: z.number().min(0, "el descuento no puede ser negativo"),
+  price: z.number().min(0, "El precio no puede ser negativo"),
+  tax_rate: z.string().min(1, "Impuesto es requerido"),
   unit_measure_id: z.number(),
   standard_code_id: z.number(),
   is_excluded: z.number(),
@@ -21,13 +21,13 @@ const itemSchema = z.object({
 })
 
 export const customerSchema = z.object({
-  identification: z.string().min(1, "Identification is required"),
+  identification: z.string().min(1, "Identificacion es requerida"),
   dv: z.string().optional(),
   company: z.string().optional(),
   trade_name: z.string().optional(),
   names: z.string().optional(),
   address: z.string().optional(),
-  email: z.string().email("Invalid email address").optional(),
+  email: z.string().email("Direccion incorrecta").optional(),
   phone: z.string().optional(),
   legal_organization_id: z.string(),
   tribute_id: z.string(),
@@ -37,7 +37,7 @@ export const customerSchema = z.object({
 
 export const invoiceFormSchema = z.object({
   numbering_range_id: z.number(),
-  reference_code: z.string().min(1, "Reference code is required"),
+  reference_code: z.string().min(1, "Codigo de referencia es requerido"),
   observation: z.string(),
   payment_form: z.string().optional(),
   payment_due_date: z.string().optional(),
@@ -54,6 +54,6 @@ export const invoiceFormSchema = z.object({
         withholding_taxes: z.array(withholdingTaxSchema).optional(),
       }),
     )
-    .min(1, "At least one item is required"),
+    .min(1, "El detalle de la factura no puede estar vacio"),
 })
 

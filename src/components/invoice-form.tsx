@@ -226,9 +226,9 @@ export function InvoiceForm() {
     <div className="max-w-4xl mx-auto p-4 space-y-6">
        {/* Botón para volver al inicio */}
        <div className="fixed top-4 left-4">
-        <a href="/"> {/* Cambia "/" por la ruta de inicio de tu aplicación */}
+        <a href="/"> 
           <Button variant="outline" size="sm">
-            <ArrowLeft className="w-4 h-4 mr-2" /> {/* Ícono de flecha hacia la izquierda */}
+            <ArrowLeft className="w-4 h-4 mr-2" /> 
             Volver al inicio
           </Button>
         </a>
@@ -241,7 +241,7 @@ export function InvoiceForm() {
         </a>
       </div>
       </div>
-             {/* Botón para volver al inicio */}
+             
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card>
