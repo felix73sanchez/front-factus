@@ -11,6 +11,7 @@ import { toast } from "sonner"
 import { submitInvoiceToFactus } from "@/lib/actions"
 import type { InvoiceFormData, Item, WithholdingTax, ServerResponse } from "@/lib/types"
 import { ResponseDisplay } from "./response-display"
+import Link from "next/link"
 
 const ORGANIZATION_TYPES = [
   { id: "1", name: "Persona Jurídica" },
@@ -137,7 +138,7 @@ export function InvoiceForm() {
         response.error = result.error;
         toast.error(result.error || "Failed to submit invoice");
       }
-    } catch (error) {
+    } catch {
       const errorResponse: ServerResponse = {
         success: false,
         error: "An unexpected error occurred",
@@ -157,7 +158,7 @@ export function InvoiceForm() {
     }))
   }
 
-  const updateItem = (index: number, field: keyof Item, value: any) => {
+  const updateItem = (index: number, field: keyof Item, value: string | number) => {
     setFormData((prev) => ({
       ...prev,
       items: prev.items.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
@@ -226,19 +227,19 @@ export function InvoiceForm() {
     <div className="max-w-4xl mx-auto p-4 space-y-6">
        {/* Botón para volver al inicio */}
        <div className="fixed top-4 left-4">
-        <a href="/"> 
+        <Link href="/"> 
           <Button variant="outline" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" /> 
             Volver al inicio
           </Button>
-        </a>
+        </Link>
         <div className="fixed top-4 right-4">
-        <a href="/facturas-all"> 
+        <Link  href="/facturas-all"> 
           <Button variant="outline" size="sm">
             Ver facturas
             <ArrowRight className="w-4 h-4 mr-2" /> 
           </Button>
-        </a>
+          </Link>
       </div>
       </div>
              

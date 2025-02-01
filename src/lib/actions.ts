@@ -5,7 +5,7 @@ import { getToken } from "./auth";
 
 export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promise<{
   success: boolean;
-  data?: any;
+  data?: Record<string, unknown>;
   error?: string;
 }> {
   
@@ -67,11 +67,11 @@ export async function submitInvoiceToFactus(invoiceData: InvoiceFormData): Promi
       success: true,
       data: factusResponse,
     };
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error enviando la factura:", error);
     return {
       success: false,
-      error: error.message,
+      error: (error as Error).message,
     };
   }
 }

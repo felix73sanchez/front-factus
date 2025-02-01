@@ -4,6 +4,7 @@ import { getFacturas } from '@/lib/facturas';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 interface Factura {
   billId: string;
@@ -23,7 +24,7 @@ const VerFacturas = () => {
       try {
         const data = await getFacturas();
         setFacturas(data);
-      } catch (err) {
+      } catch {
         setError('Error al obtener las facturas');
       } finally {
         setLoading(false);
@@ -53,12 +54,12 @@ const VerFacturas = () => {
     <div className="p-6 max-w-6xl mx-auto">
          {/* Botón para volver al inicio */}
       <div className="fixed top-4 left-4">
-        <a href="/"> 
+      <Link  href="/"> 
           <Button variant="outline" size="sm">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver al inicio
           </Button>
-        </a>
+          </Link>
       </div>
       <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
         Facturas Generadas
