@@ -1,5 +1,4 @@
 'use client';
-
 import { getFacturas } from '@/lib/facturas';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
@@ -30,7 +29,6 @@ const VerFacturas = () => {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -51,28 +49,31 @@ const VerFacturas = () => {
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-         {/* Botón para volver al inicio */}
-      <div className="fixed top-4 left-4">
-      <Link  href="/"> 
-          <Button variant="outline" size="sm">
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+      {/* Botón para volver al inicio */}
+      <div className="fixed top-4 left-4 z-10">
+        <Link href="/">
+          <Button variant="outline" size="sm" className="flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Volver al inicio
           </Button>
-          </Link>
+        </Link>
       </div>
-      <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+
+      <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
         Facturas Generadas
       </h1>
+
+      {/* Contenedor de la tabla */}
       <div className="overflow-x-auto">
         <table className="min-w-full text-sm text-left text-gray-500 border border-gray-300">
           <thead className="text-xs text-gray-700 uppercase bg-gray-100 border-b border-gray-300 sticky top-0">
             <tr>
-              <th className="py-3 px-4 text-center">ID</th>
-              <th className="py-3 px-4 text-center">Número de Factura</th>
-              <th className="py-3 px-4 text-center">Cliente</th>
-              <th className="py-3 px-4 text-center">Código de Referencia</th>
-              <th className="py-3 px-4 text-center">Facturas</th>
+              <th className="py-3 px-4 text-center sm:px-6">ID</th>
+              <th className="py-3 px-4 text-center sm:px-6">Número de Factura</th>
+              <th className="py-3 px-4 text-center sm:px-6">Cliente</th>
+              <th className="py-3 px-4 text-center sm:px-6">Código de Referencia</th>
+              <th className="py-3 px-4 text-center sm:px-6">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -83,13 +84,13 @@ const VerFacturas = () => {
                   index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
                 } hover:bg-gray-100`}
               >
-                <td className="py-3 px-4 text-center font-medium text-gray-700">
+                <td className="py-3 px-4 text-center sm:px-6 font-medium text-gray-700">
                   {factura.billId}
                 </td>
-                <td className="py-3 px-4 text-center">{factura.billNumber}</td>
-                <td className="py-3 px-4 text-center">{factura.customerName}</td>
-                <td className="py-3 px-4 text-center">{factura.referenceCode}</td>
-                <td className="py-3 px-4 text-center">
+                <td className="py-3 px-4 text-center sm:px-6">{factura.billNumber}</td>
+                <td className="py-3 px-4 text-center sm:px-6">{factura.customerName}</td>
+                <td className="py-3 px-4 text-center sm:px-6">{factura.referenceCode}</td>
+                <td className="py-3 px-4 text-center sm:px-6">
                   <a
                     href={factura.qrImage}
                     target="_blank"

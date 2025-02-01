@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎨 API Factus - Frontend (Next.js)
 
-## Getting Started
+Este es el frontend de **API Factus**, desarrollado con **Next.js** y desplegado en **Vercel** para pruebas.
 
-First, run the development server:
+## 🚀 Descripción
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Este frontend permite la gestión visual de facturas, proporcionando una interfaz intuitiva para la creación, consulta y administración de facturas en tiempo real.
+
+🌍 **URL del frontend en Vercel:** [front-factus.vercel.app](https://front-factus.vercel.app)
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Next.js 14** 
+- **TypeScript** 
+- **Tailwind CSS** 
+- **Fetch**
+- **Vercel**
+
+## 📌 Instalación y Ejecución Local
+
+### 1️⃣ **Clonar el repositorio**
+```sh
+ git clone https://github.com/felix73sanchez/front-factus.git
+ cd front-factus
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ **Instalar dependencias**
+```sh
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3️⃣ **Configurar las variables de entorno**
+Crear un archivo `.env` con las siguientes variables:
+```ini
+API_FACTUS=
+API_FSX=
+USER=
+PASS=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4️⃣ **Ejecutar la aplicación**
+```sh
+npm run dev
+```
 
-## Learn More
+La aplicación estará disponible en `http://localhost:3000`
 
-To learn more about Next.js, take a look at the following resources:
+## 🚀 Despliegue en Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+El frontend está desplegado en **Vercel**, lo que permite realizar pruebas en la siguiente URL:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+🔗 **Frontend URL:** `https://front-factus.vercel.app`
 
-## Deploy on Vercel
+## 📌 Características Principales
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+✅ **Gestión de facturas** (Crear, listar)  
+✅ **Interfaz responsiva** optimizada para dispositivos móviles  
+✅ **Consumo de API REST** desde el backend en Render  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📌 Contribuciones
+
+¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto, crea un **issue** o envía un **pull request**.
+
+## 📜 Licencia
+
+Este proyecto está bajo la licencia **MIT**.
+
