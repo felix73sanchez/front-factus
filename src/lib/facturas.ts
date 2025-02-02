@@ -21,7 +21,7 @@ export async function getFacturas(): Promise<Factura[]> {
       headers: {
         Authorization: `Basic ${Buffer.from(`${USER}:${PASS}`).toString("base64")}`,
       },
-      cache: "no-store",
+      //cache: "no-store",
     });
 
     if (!response.ok) {
