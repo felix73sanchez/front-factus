@@ -12,7 +12,15 @@ const API_FSX = process.env.API_FSX;
 const USER = process.env.USER;
 const PASS = process.env.PASS;
 
-export async function getFacturas(): Promise<Factura[]> {
+
+let cachedFacturas: Factura[] | null = null;
+
+export async function getFacturas(forceReload: boolean = false): Promise<Factura[]> {
+  
+  if (!forceReload && cachedFacturas) {
+    return cachedFacturas;
+  }
+
   const url = `${API_FSX}v1/facturas`;
 
   try {
@@ -21,14 +29,16 @@ export async function getFacturas(): Promise<Factura[]> {
       headers: {
         Authorization: `Basic ${Buffer.from(`${USER}:${PASS}`).toString("base64")}`,
       },
-      //cache: "no-store",
     });
 
     if (!response.ok) {
       throw new Error("Error al obtener las facturas");
     }
 
-    return await response.json();
+    const data = await response.json();
+    cachedFacturas = data; 
+
+    return data;
   } catch (error) {
     console.error("Error al obtener las facturas:", error);
     throw error;

@@ -2,7 +2,7 @@
 import { getFacturas } from '@/lib/facturas';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 interface Factura {
@@ -18,18 +18,22 @@ const VerFacturas = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchData = async (forceReload: boolean = false) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await getFacturas(forceReload);
+      setFacturas(data);
+    } catch (error) {
+      setError('Error al obtener las facturas');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getFacturas();
-        setFacturas(data);
-      } catch {
-        setError('Error al obtener las facturas');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
+    fetchData(); 
   }, []);
 
   if (loading) {
@@ -50,7 +54,7 @@ const VerFacturas = () => {
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl mx-auto">
-      {/* Botón para volver al inicio */}
+      {/* Boton inicio */}
       <div className="fixed top-4 left-4 z-10">
         <Link href="/">
           <Button variant="outline" size="sm" className="flex items-center">
@@ -58,6 +62,19 @@ const VerFacturas = () => {
             Volver al inicio
           </Button>
         </Link>
+      </div>
+
+      {/* Boton de recarga */}
+      <div className="fixed top-4 right-4 z-10">
+        <Button
+          variant="outline"
+          size="sm"
+          className="flex items-center"
+          onClick={() => fetchData(true)} 
+        >
+          <RefreshCw className="w-4 h-4 mr-2" />
+          Recargar
+        </Button>
       </div>
 
       <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
