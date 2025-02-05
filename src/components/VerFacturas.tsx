@@ -25,7 +25,7 @@ const VerFacturas = () => {
     try {
       const data = await getFacturas(forceReload);
       setFacturas(data);
-    } catch (error) {
+    } catch {
       setError('Error al obtener las facturas');
     } finally {
       setLoading(false);
