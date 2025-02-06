@@ -22,7 +22,7 @@ const VerFacturas = () => {
     const fetchData = async () => {
       try {
         const data = await getFacturas();
-        setFacturas(data);
+        setFacturas(data || []);
       } catch {
         setError('Falló al obtener las facturas');
       } finally {
@@ -49,9 +49,9 @@ const VerFacturas = () => {
   }
 
   return (
-    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+    <div className="relative pt-16">
       {/* Botón para volver al inicio */}
-      <div className="fixed top-4 left-4 z-10">
+      <div className="absolute top-4 left-4 z-30 sm:fixed">
         <Link href="/">
           <Button variant="outline" size="sm" className="flex items-center">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -60,9 +60,11 @@ const VerFacturas = () => {
         </Link>
       </div>
 
+      {/* Título */}
       <h1 className="text-3xl sm:text-4xl font-bold mb-6 text-center text-gray-800">
         Facturas Generadas
       </h1>
+
 
       {/* Contenedor de la tabla */}
       <div className="overflow-x-auto">
@@ -80,9 +82,8 @@ const VerFacturas = () => {
             {facturas.map((factura, index) => (
               <tr
                 key={factura.billId}
-                className={`${
-                  index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                } hover:bg-gray-100`}
+                className={`${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'
+                  } hover:bg-gray-100`}
               >
                 <td className="py-3 px-4 text-center sm:px-6 font-medium text-gray-700">
                   {factura.billId}
