@@ -24,12 +24,17 @@ const VerFacturas = () => {
         const data = await getFacturas();
         setFacturas(data || []);
       } catch {
-        setError('Falló al obtener las facturas');
+        setError("Falló al obtener las facturas");
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+  
+    fetchData(); 
+  
+    const interval = setInterval(fetchData, 5 * 60 * 1000);
+  
+    return () => clearInterval(interval); 
   }, []);
 
   if (loading) {
